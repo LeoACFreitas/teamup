@@ -18,6 +18,11 @@ namespace Teamup
             var userClaims = h.User.Claims;
             return userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         }
+        public static User GetCurrentUser(this HttpContext httpContext, MyDbContext db)
+        {
+            var sub = Convert.ToDecimal(httpContext.GetSubFromJwt());
+            return db.User.FirstOrDefault(u => u.Sub.Equals(sub));
+        }
 
         public static void SendEmail(this HttpContext h, string message)
         {
