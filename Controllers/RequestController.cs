@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Teamup.Data;
+using Teamup.Helpers;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Teamup.Controllers

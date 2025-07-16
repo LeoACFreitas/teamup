@@ -1,9 +1,10 @@
-using Teamup;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Microsoft.AspNetCore.Diagnostics;
+using Teamup.Helpers;
+using Teamup.Data;
 
 internal class Program
 {
@@ -11,7 +12,7 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        var k = Util.HttpRequest("https://www.googleapis.com/oauth2/v3/certs");
+        var k = HttpHelper.HttpRequest("https://www.googleapis.com/oauth2/v3/certs");
         var ks = JsonWebKeySet.Create(k).GetSigningKeys();
         var connectionString = Environment.GetEnvironmentVariable("csteamup");
 

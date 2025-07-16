@@ -1,12 +1,10 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Org.BouncyCastle.Asn1.Crmf;
-using RestSharp;
+﻿using RestSharp;
 using System.Security.Claims;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Teamup.Data;
 
-namespace Teamup
+namespace Teamup.Helpers
 {
-    public static class Util
+    public static class HttpHelper
     {
         public static string HttpRequest(string url)
         {

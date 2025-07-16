@@ -1,8 +1,9 @@
-﻿namespace Teamup;
+﻿namespace Teamup.Data;
 
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Teamup.Helpers;
 
 public class MyDbContext(DbContextOptions<MyDbContext> c) : DbContext(c)
 {
@@ -26,7 +27,7 @@ public class User
         }
         set
         {
-            if (!Util.Countries.Any(c => c[1].Equals(value)))
+            if (!HttpHelper.Countries.Any(c => c[1].Equals(value)))
             {
                 throw new InvalidOperationException();
             }

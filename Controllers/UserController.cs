@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using Teamup;
+using Teamup.Data;
+using Teamup.Helpers;
 
 namespace Teamup.Controllers
 {
