@@ -26,8 +26,11 @@ internal class Program
             .AddSwaggerGen()
             .AddCors(options =>
             {
-                options.AddPolicy(CORS_NAME, builder => builder.AllowAnyMethod().AllowAnyHeader()
-                    .WithOrigins("https://teamupgaming.net", "http://localhost:3000"));
+                options.AddPolicy(CORS_NAME, builder => builder
+					.SetIsOriginAllowed(origin => true)
+					.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials());
             })
             .AddDbContext<MyDbContext>(o =>
                 o.UseMySQL(connectionString)
@@ -55,7 +58,6 @@ internal class Program
         app.UseCors(CORS_NAME);
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseHttpsRedirection();
         app.UseSerilogRequestLogging();
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
