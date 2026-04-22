@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.EntityFrameworkCore.Metadata;
 
@@ -19,10 +19,9 @@ namespace Teamup.Migrations
                 name: "Game",
                 columns: table => new
                 {
-                    Game_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Game_id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
+                    Value = table.Column<decimal>(type: "decimal(10,10)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,9 +35,9 @@ namespace Teamup.Migrations
                 {
                     User_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Nickname = table.Column<string>(type: "longtext", nullable: false),
-                    Sub = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Country = table.Column<string>(type: "longtext", nullable: false)
+                    Nickname = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    Sub = table.Column<decimal>(type: "decimal(30,0)", nullable: true),
+                    Country = table.Column<string>(type: "varchar(2)", maxLength: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,10 +51,10 @@ namespace Teamup.Migrations
                 {
                     Request_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    User_id = table.Column<int>(type: "int", nullable: true),
-                    Game_id = table.Column<int>(type: "int", nullable: true),
-                    Description = table.Column<string>(type: "longtext", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    User_id = table.Column<int>(type: "int", nullable: false),
+                    Game_id = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -65,13 +64,13 @@ namespace Teamup.Migrations
                         column: x => x.Game_id,
                         principalTable: "Game",
                         principalColumn: "Game_id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Request_User_User_id",
                         column: x => x.User_id,
                         principalTable: "User",
                         principalColumn: "User_id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 

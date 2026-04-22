@@ -18,8 +18,11 @@ public class MyDbContext(DbContextOptions<MyDbContext> c) : DbContext(c)
         {
             entity.ToTable("User");
             entity.HasKey(u => u.User_id);
+            entity.Property(u => u.Nickname).HasMaxLength(20);
+            entity.Property(u => u.Sub).HasColumnType("decimal(30,0)");
             // Read via field to bypass Country setter validation during materialization
             entity.Property(u => u.Country)
+                  .HasMaxLength(2)
                   .HasField("_country")
                   .UsePropertyAccessMode(PropertyAccessMode.Field);
         });
@@ -28,22 +31,27 @@ public class MyDbContext(DbContextOptions<MyDbContext> c) : DbContext(c)
         {
             entity.ToTable("Game");
             entity.HasKey(g => g.Game_id);
+            entity.Property(g => g.Game_id).ValueGeneratedNever();
+            entity.Property(g => g.Name).HasMaxLength(80);
+            entity.Property(g => g.Value).HasColumnType("decimal(10,10)");
         });
 
         modelBuilder.Entity<Request>(entity =>
         {
             entity.ToTable("Request");
             entity.HasKey(r => r.Request_id);
+            entity.Property(r => r.Description).HasMaxLength(200);
+            entity.Property(r => r.Date)
+                  .HasColumnType("datetime")
+                  .HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.HasOne(r => r.User)
                   .WithMany()
                   .HasForeignKey(r => r.User_id)
-                  .IsRequired(false)
-                  .OnDelete(DeleteBehavior.SetNull);
+                  .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(r => r.Game)
                   .WithMany()
                   .HasForeignKey(r => r.Game_id)
-                  .IsRequired(false)
-                  .OnDelete(DeleteBehavior.SetNull);
+                  .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
@@ -71,10 +79,10 @@ public class Request
 {
     [Key]
     public int Request_id { get; set; }
-    public int? User_id { get; set; }
-    public User? User { get; set; }
-    public int? Game_id { get; set; }
-    public Game? Game { get; set; }
+    public int User_id { get; set; }
+    public User User { get; set; }
+    public int Game_id { get; set; }
+    public Game Game { get; set; }
     public string Description { get; set; }
     public DateTime Date { get; set; }
 }
