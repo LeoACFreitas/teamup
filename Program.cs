@@ -17,6 +17,8 @@ internal class Program
         var connectionString = Environment.GetEnvironmentVariable("csteamup");
 
         Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .WriteTo.Console()
             .WriteTo.File("/var/www/teamup/logs/log.txt")
             .CreateLogger();
 
@@ -55,10 +57,10 @@ internal class Program
         Log.Logger.Information("It is running...");
 
         var app = builder.Build();
+        app.UseSerilogRequestLogging();
         app.UseCors(CORS_NAME);
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseSerilogRequestLogging();
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
