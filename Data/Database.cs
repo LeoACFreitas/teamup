@@ -11,6 +11,7 @@ public class MyDbContext(DbContextOptions<MyDbContext> c) : DbContext(c)
     public DbSet<User> User { get; set; }
     public DbSet<Request> Request { get; set; }
     public DbSet<Game> Game { get; set; }
+    public DbSet<DataGatherer> DataGatherer { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,6 +54,13 @@ public class MyDbContext(DbContextOptions<MyDbContext> c) : DbContext(c)
                   .HasForeignKey(r => r.Game_id)
                   .OnDelete(DeleteBehavior.Restrict);
         });
+
+        modelBuilder.Entity<DataGatherer>(entity =>
+        {
+            entity.ToTable("DataGatherer");
+            entity.HasKey(d => d.DataGatherer_id);
+            entity.Property(d => d.Value).HasColumnName("Value").HasColumnType("longtext");
+        });
     }
 }
 
@@ -93,4 +101,11 @@ public class Game
     public int Game_id { get; set; }
     public string Name { get; set; }
     public decimal Value { get; set; }
+}
+
+public class DataGatherer
+{
+    [Key]
+    public int DataGatherer_id { get; set; }
+    public string Value { get; set; } = string.Empty;
 }
